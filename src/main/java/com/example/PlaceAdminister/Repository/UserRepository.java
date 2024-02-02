@@ -2,6 +2,7 @@ package com.example.PlaceAdminister.Repository;
 
 import com.example.PlaceAdminister.DTO.RoomDTO;
 import com.example.PlaceAdminister.DTO.UserDTO;
+import com.example.PlaceAdminister.Model_Entitiy.UserEntity;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONArray;
@@ -16,9 +17,13 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Component
-public class UserRepository {
+public  class UserRepository {
+
+
+
 
     public List<UserDTO> readFromJsonFile(String filePath) {
         try {
@@ -45,10 +50,10 @@ public class UserRepository {
         }
         return models;
     }
-    public UserDTO searchDataById(Long id , String filePath) {
+    public UserDTO searchDataByUserName(String name , String filePath) {
         List<UserDTO> dataList = readFromJsonFile(filePath);
         return dataList.stream()
-                .filter(data -> data.getId().equals(id))
+                .filter(data -> data.getName().equals(name))
                 .findFirst()
                 .orElse(null);
     }
