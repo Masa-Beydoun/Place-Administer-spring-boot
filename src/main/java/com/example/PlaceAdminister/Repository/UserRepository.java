@@ -20,9 +20,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Component
-public  class UserRepository {
-
-
+public class UserRepository {
 
 
     public List<UserDTO> readFromJsonFile(String filePath) {
@@ -50,10 +48,10 @@ public  class UserRepository {
         }
         return models;
     }
-    public UserDTO searchDataByUserName(String name , String filePath) {
+    public UserDTO searchDataById(Long id , String filePath) {
         List<UserDTO> dataList = readFromJsonFile(filePath);
         return dataList.stream()
-                .filter(data -> data.getName().equals(name))
+                .filter(data -> data.getId().equals(id))
                 .findFirst()
                 .orElse(null);
     }
@@ -90,5 +88,11 @@ public  class UserRepository {
         return userDTO;
 
     }
-
+    public UserDTO searchDataByUserName(String name , String filePath) {
+        List<UserDTO> dataList = readFromJsonFile(filePath);
+        return dataList.stream()
+                .filter(data -> data.getName().equals(name))
+                .findFirst()
+                .orElse(null);
+    }
 }

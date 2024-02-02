@@ -37,12 +37,12 @@ public class ApplicationSecurityConfig  {
         return authProvider;
     }
 
-    @Bean
-    public UserDetailsService userDetailsService() {
-        UserDTO userDTO=repository.searchDataByUserName(username,"src/main/resources/User.json");
-        if(userDTO!=null) return userDTO;
-        return username -> .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-    }
+//    @Bean
+//    public UserDetailsService userDetailsService() {
+//        UserDTO userDTO=repository.searchDataByUserName(username,"src/main/resources/User.json");
+////        if(userDTO!=null) return userDTO;
+////        return username -> .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+//    }
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
