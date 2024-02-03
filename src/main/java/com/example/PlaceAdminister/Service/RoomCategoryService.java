@@ -17,4 +17,5 @@ public class RoomCategoryService {
         roomCategories.add(roomCategoryEntity);
         // Save the updated list to JSON
     }
+
 }
