@@ -7,7 +7,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
-import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -16,9 +15,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
 public class RoomCategoryRepository {
+
     public List<RoomCategoryDTO> readFromJsonFile(String filePath) {
+        String filepath1 = "src/main/resources/RoomCategories.json";
+
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             List<RoomCategoryDTO> models = objectMapper.readValue(new File(filePath), new TypeReference<>() {});
@@ -27,13 +28,13 @@ public class RoomCategoryRepository {
             return new ArrayList<>();
         }
     }
+
     public RoomCategoryDTO writeToJsonFile(RoomCategoryDTO models, String filePath) {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
 
             List<RoomCategoryDTO> roomCategory= readFromJsonFile(filePath);
-            Long id= Long.valueOf(1);
-            if(!(roomCategory.size()==0)) id=(Long)roomCategory.get(roomCategory.size()-1).getId()+1;
+            Long id=(Long)roomCategory.get(roomCategory.size()+1).getId();
             models.setId(id);
             roomCategory.add(models);
 
@@ -43,6 +44,8 @@ public class RoomCategoryRepository {
         }
         return models;
     }
+
+
     public RoomCategoryDTO searchDataById(Long id , String filePath) {
         List<RoomCategoryDTO> dataList = readFromJsonFile(filePath);
         return dataList.stream()
@@ -50,7 +53,8 @@ public class RoomCategoryRepository {
                 .findFirst()
                 .orElse(null);
     }
-    public RoomCategoryDTO UpdateById(Long id , RoomCategoryDTO roomCategoryDTO , String filePath){
+
+    public RoomCategoryDTO UpdateById(Long id , RoomCategoryDTO tableCategoryDTO , String filePath){
         try {
             // Step 1: Read the JSON file and parse it
             File jsonFile = new File(filePath);
@@ -64,8 +68,9 @@ public class RoomCategoryRepository {
                 if (element.getLong("id") == (id)) { // Assuming "id" is the identifier for the element
                     System.out.println(element.getInt("id"));
                     element.put("id" , id);
-                    element.put("type" , roomCategoryDTO.getType());
-
+//                    element.put("shape", tableCategoryDTO.getShape());
+//                    element.put("num_of_seats", tableCategoryDTO.getNum_of_seats());
+                    // Add more modifications as needed
                 }
             }
 
@@ -79,6 +84,8 @@ public class RoomCategoryRepository {
             throw new RuntimeException(e);
         }
 
-        return roomCategoryDTO;
+        return tableCategoryDTO;
     }
+
+
 }

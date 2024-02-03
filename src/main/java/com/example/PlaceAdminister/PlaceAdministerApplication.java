@@ -3,7 +3,6 @@ package com.example.PlaceAdminister;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
-import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 
 import java.io.File;
 
@@ -13,7 +12,6 @@ public class PlaceAdministerApplication {
 	public static void main(String[] args) {
 		createFiles("src/main/resources/Rooms.json");
 		createFiles("src/main/resources/RoomCategories.json");
-		createFiles("src/main/resources/User.json");
 		SpringApplication.run(PlaceAdministerApplication.class, args);
 	}
 	public static void createFiles(String filePath){

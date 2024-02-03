@@ -2,7 +2,6 @@ package com.example.PlaceAdminister.Repository;
 
 import com.example.PlaceAdminister.DTO.RoomCategoryDTO;
 import com.example.PlaceAdminister.DTO.RoomDTO;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONArray;
@@ -15,11 +14,13 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
 public class RoomRepository {
+
     public List<RoomDTO> readFromJsonFile(String filePath) {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
@@ -29,13 +30,13 @@ public class RoomRepository {
             return new ArrayList<>();
         }
     }
+
     public RoomDTO writeToJsonFile(RoomDTO models, String filePath) {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
 
             List<RoomDTO> rooms= readFromJsonFile(filePath);
-            Long id= Long.valueOf(1);
-            if(!(rooms.size()==0)) id=(Long)rooms.get(rooms.size()-1).getId()+1;
+            Long id=(Long)rooms.get(rooms.size()+1).getId();
             models.setId(id);
             rooms.add(models);
 
@@ -45,6 +46,8 @@ public class RoomRepository {
         }
         return models;
     }
+
+
     public RoomDTO searchDataById(Long id , String filePath) {
         List<RoomDTO> dataList = readFromJsonFile(filePath);
         return dataList.stream()
@@ -52,6 +55,24 @@ public class RoomRepository {
                 .findFirst()
                 .orElse(null);
     }
+
+//    public List<RoomDTO> searchByRoomId( Long room_id, String filePath) {
+//        List<RoomDTO> dataList = readFromJsonFile(filePath);
+//        List<RoomDTO> roomDTOList =  dataList.stream()
+//                .filter(data -> data.getRoom_id().equals(room_id)).collect(Collectors.toList());
+//        return roomDTOList;
+////                .orElse(null)) ;
+//    }
+
+//    public List<RoomDTO> searchByCategoryId( Long category_id, String filePath) {
+//        List<RoomDTO> dataList = readFromJsonFile(filePath);
+//        List<RoomDTO> roomDTOList =  dataList.stream()
+//                .filter(data -> data.getCategory_id().equals(category_id)).collect(Collectors.toList());
+//        return roomDTOList;
+////                .orElse(null)) ;
+//    }
+
+
     public RoomDTO UpdateById(Long id , RoomDTO roomDTO , String filePath) {
         try {
             // Step 1: Read the JSON file and parse it
@@ -64,15 +85,12 @@ public class RoomRepository {
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject element = jsonArray.getJSONObject(i);
                 if (element.getLong("id") == (id)) { // Assuming "id" is the identifier for the element
+                    System.out.println(element.getInt("id"));
                     element.put("id", id);
-                    roomDTO.setId(id);
                     element.put("status", roomDTO.getStatus());
                     element.put("time_of_reservation", roomDTO.getTime_of_reservation());
-                    element.put("max_num_of_chairs", roomDTO.getMax_num_of_chairs());
-                    element.put("placeId", roomDTO.getPlaceId());
-                    element.put("categoriesId", roomDTO.getCategoriesId());
-                    element.put("tablesIds", roomDTO.getTablesIds());
-
+//                    element.put("room_id", roomDTO.getRoom_id());
+                    // Add more modifications as needed
                 }
             }
 
@@ -88,6 +106,7 @@ public class RoomRepository {
         }
 
         return roomDTO;
+
 
     }
 }

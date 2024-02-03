@@ -1,7 +1,6 @@
 package com.example.PlaceAdminister.DTO;
 
 import com.example.PlaceAdminister.Request.RoomCategoryRequest;
-import com.example.PlaceAdminister.Request.RoomRequest;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,8 +15,10 @@ import java.util.Set;
 public class RoomCategoryDTO {
     private Long id;
     private String type;
+    private Set<Long> roomIds = new HashSet<>();
 
-    public RoomCategoryDTO(RoomCategoryRequest request) {
-        this.type=request.getType();
+    public RoomCategoryDTO(String type, Set<Long> roomIds) {
+        this.type = type;
+        this.roomIds = roomIds;
     }
 }

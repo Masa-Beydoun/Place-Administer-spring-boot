@@ -1,8 +1,7 @@
 package com.example.PlaceAdminister.Repository;
 
-import com.example.PlaceAdminister.DTO.RoomDTO;
-import com.example.PlaceAdminister.DTO.UserDTO;
-import com.example.PlaceAdminister.Model_Entitiy.UserEntity;
+import com.example.PlaceAdminister.DTO.TableCategoryDTO;
+import com.example.PlaceAdminister.DTO.TableDTO;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONArray;
@@ -17,45 +16,48 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Component
-public class UserRepository {
 
+public class TableCategoryRepository {
 
-    public List<UserDTO> readFromJsonFile(String filePath) {
+    public List<TableCategoryDTO> readFromJsonFile(String filePath) {
+        String filepath1 = "src/main/resources/Rooms.json";
+
         try {
             ObjectMapper objectMapper = new ObjectMapper();
-            List<UserDTO> models = objectMapper.readValue(new File(filePath), new TypeReference<>() {});
+            List<TableCategoryDTO> models = objectMapper.readValue(new File(filePath), new TypeReference<>() {});
             return models;
         } catch (IOException e) {
             return new ArrayList<>();
         }
     }
-    public UserDTO writeToJsonFile(UserDTO models, String filePath) {
+
+    public TableCategoryDTO writeToJsonFile(TableCategoryDTO models, String filePath) {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
 
-            List<UserDTO> user= readFromJsonFile(filePath);
-            Long id= Long.valueOf(1);
-            if(!(user.size()==0)) id=(Long)user.get(user.size()-1).getId()+1;
-            models.setId(id);
-            user.add(models);
+            List<TableCategoryDTO> tables= readFromJsonFile(filePath);
+            models.setId((long)tables.size()+1);
+            tables.add(models);
 
-            objectMapper.writeValue(new File(filePath), user);
+            objectMapper.writeValue(new File(filePath), tables);
         } catch (IOException e) {
             e.printStackTrace(); // Handle the exception appropriately in a production environment
         }
         return models;
     }
-    public UserDTO searchDataById(Long id , String filePath) {
-        List<UserDTO> dataList = readFromJsonFile(filePath);
+
+
+    public TableCategoryDTO searchDataById(Long id , String filePath) {
+        List<TableCategoryDTO> dataList = readFromJsonFile(filePath);
         return dataList.stream()
                 .filter(data -> data.getId().equals(id))
                 .findFirst()
                 .orElse(null);
     }
-    public UserDTO UpdateById(Long id , UserDTO userDTO , String filePath) {
+
+    public TableCategoryDTO UpdateById(Long id , TableCategoryDTO tableCategoryDTO , String filePath){
         try {
             // Step 1: Read the JSON file and parse it
             File jsonFile = new File(filePath);
@@ -67,10 +69,11 @@ public class UserRepository {
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject element = jsonArray.getJSONObject(i);
                 if (element.getLong("id") == (id)) { // Assuming "id" is the identifier for the element
-                    element.put("id", id);
-                    userDTO.setId(id);
-                    element.put("name", userDTO.getName());
-                    element.put("phoneNumber", userDTO.getPhoneNumber());
+                    System.out.println(element.getInt("id"));
+                    element.put("id" , id);
+                    element.put("shape", tableCategoryDTO.getShape());
+                    element.put("num_of_seats", tableCategoryDTO.getNum_of_seats());
+                    // Add more modifications as needed
                 }
             }
 
@@ -85,14 +88,6 @@ public class UserRepository {
             throw new RuntimeException(e);
         }
 
-        return userDTO;
-
-    }
-    public UserDTO searchDataByUserName(String name , String filePath) {
-        List<UserDTO> dataList = readFromJsonFile(filePath);
-        return dataList.stream()
-                .filter(data -> data.getName().equals(name))
-                .findFirst()
-                .orElse(null);
+        return tableCategoryDTO;
     }
 }

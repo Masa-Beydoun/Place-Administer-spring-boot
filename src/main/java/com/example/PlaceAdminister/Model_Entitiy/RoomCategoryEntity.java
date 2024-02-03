@@ -6,8 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -16,21 +14,21 @@ import java.util.Set;
 
 @Entity
 @AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
-@Component
+@NoArgsConstructor
 public class RoomCategoryEntity {
 
 
     @Id
-    @JsonProperty("id")
     private Long id;
     @JsonProperty("type")
     private String type;
+    @JsonProperty("roomIds")
+    private Set<Long> roomIds = new HashSet<>();
 
-
-    public RoomCategoryEntity(String type) {
+    public RoomCategoryEntity(Long id , String type) {
+        this.id = id;
         this.type=type;
     }
 

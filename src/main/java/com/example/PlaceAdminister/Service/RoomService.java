@@ -39,6 +39,15 @@ public class RoomService {
         return roomRepository.searchDataById(id , this.filepath);
     }
 
+//    public List<RoomDTO> showTablesByRoomId(Long id)
+//    {
+//        return  roomRepository.searchByRoomId(id , this.filepath);
+//    }
+//
+//    public List<RoomDTO> showTablesByCategoryId(Long id)
+//    {
+//        return  roomRepository.searchByCategoryId(id , this.filepath);
+//    }
 
     public RoomDTO update(Long id , RoomDTO roomDTO){
         return roomRepository.UpdateById(id ,roomDTO,this.filepath);
@@ -74,9 +83,11 @@ public class RoomService {
             return null;
         }
     }
-//    public void delete(Long id){
-//        List<RoomDTO> rooms=getAllRooms();
-//        rooms.
-//    }
+
+
+    public void delete(Long id){
+
+    }
+
 }
 
