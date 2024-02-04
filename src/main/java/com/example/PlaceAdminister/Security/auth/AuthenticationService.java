@@ -6,6 +6,10 @@ import com.alibou.security.token.TokenRepository;
 import com.alibou.security.token.TokenType;
 import com.alibou.security.user.User;
 import com.alibou.security.user.UserRepository;
+import com.example.PlaceAdminister.Security.config.JwtService;
+import com.example.PlaceAdminister.Security.token.TokenRepository;
+import com.example.PlaceAdminister.Security.user.User;
+import com.example.PlaceAdminister.Security.user.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -28,6 +32,7 @@ public class AuthenticationService {
   private final AuthenticationManager authenticationManager;
 
   public AuthenticationResponse register(RegisterRequest request) {
+
     var user = User.builder()
         .firstname(request.getFirstname())
         .lastname(request.getLastname())
@@ -35,7 +40,7 @@ public class AuthenticationService {
         .password(passwordEncoder.encode(request.getPassword()))
         .role(request.getRole())
         .build();
-    var savedUser = repository.save(user);
+    var savedUser = repository.writeToJsonFile(user,filePath);
     var jwtToken = jwtService.generateToken(user);
     var refreshToken = jwtService.generateRefreshToken(user);
     saveUserToken(savedUser, jwtToken);
@@ -52,8 +57,8 @@ public class AuthenticationService {
             request.getPassword()
         )
     );
-    var user = repository.findByEmail(request.getEmail())
-        .orElseThrow();
+    var user = repository.findByEmail(request.getEmail(),filePath)
+//        .orElseThrow();
     var jwtToken = jwtService.generateToken(user);
     var refreshToken = jwtService.generateRefreshToken(user);
     revokeAllUserTokens(user);
@@ -63,6 +68,7 @@ public class AuthenticationService {
             .refreshToken(refreshToken)
         .build();
   }
+  private String filePath="src/main/resources/Users.json";
 
   private void saveUserToken(User user, String jwtToken) {
     var token = Token.builder()
@@ -99,8 +105,8 @@ public class AuthenticationService {
     refreshToken = authHeader.substring(7);
     userEmail = jwtService.extractUsername(refreshToken);
     if (userEmail != null) {
-      var user = this.repository.findByEmail(userEmail)
-              .orElseThrow();
+      var user = this.repository.findByEmail(userEmail,filePath);
+//              .orElseThrow();
       if (jwtService.isTokenValid(refreshToken, user)) {
         var accessToken = jwtService.generateToken(user);
         revokeAllUserTokens(user);

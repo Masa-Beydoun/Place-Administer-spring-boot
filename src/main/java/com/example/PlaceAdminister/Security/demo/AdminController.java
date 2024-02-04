@@ -1,6 +1,7 @@
 package com.example.PlaceAdminister.Security.demo;
 
-import io.swagger.v3.oas.annotations.Hidden;
+//import io.swagger.v3.oas.annotations.Hidden;
+import org.eclipse.sisu.Hidden;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,19 +17,19 @@ public class AdminController {
     }
     @PostMapping
     @PreAuthorize("hasAuthority('admin:create')")
-    @Hidden
+//    @Hidden
     public String post() {
         return "POST:: admin controller";
     }
     @PutMapping
     @PreAuthorize("hasAuthority('admin:update')")
-    @Hidden
+//    @Hidden
     public String put() {
         return "PUT:: admin controller";
     }
     @DeleteMapping
     @PreAuthorize("hasAuthority('admin:delete')")
-    @Hidden
+//    @Hidden
     public String delete() {
         return "DELETE:: admin controller";
     }

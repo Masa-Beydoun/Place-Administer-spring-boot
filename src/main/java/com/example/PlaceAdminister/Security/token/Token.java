@@ -1,6 +1,6 @@
 package com.example.PlaceAdminister.Security.token;
 
-import com.alibou.security.user.User;
+import com.example.PlaceAdminister.Security.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

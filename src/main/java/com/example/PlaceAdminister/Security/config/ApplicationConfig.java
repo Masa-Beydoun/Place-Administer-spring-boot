@@ -2,6 +2,7 @@ package com.example.PlaceAdminister.Security.config;
 
 import com.alibou.security.auditing.ApplicationAuditAware;
 import com.alibou.security.user.UserRepository;
+import com.example.PlaceAdminister.Security.auditing.ApplicationAuditAware;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,7 +24,7 @@ public class ApplicationConfig {
 
   @Bean
   public UserDetailsService userDetailsService() {
-    return username -> repository.findByEmail(username)
+    return username -> repository.findByEmail(username,"src/main/resources/Users.json")
         .orElseThrow(() -> new UsernameNotFoundException("User not found"));
   }
 
